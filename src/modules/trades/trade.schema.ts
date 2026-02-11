@@ -1,6 +1,6 @@
 import z from "zod";
 
-const createTradeSchema = z.object({
+export const createTradeSchema = z.object({
     account: z.string().min(1, "Account name cannot be empty"),
     date: z.string().refine((date) => !isNaN(Date.parse(date)), {
         message: "Invalid date format",
