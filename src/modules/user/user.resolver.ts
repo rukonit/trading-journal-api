@@ -1,4 +1,3 @@
-import { ZodError } from "zod";
 import { validateSchema } from "../../utils/validateSchema";
 import { createUserSchema } from "./user.schema";
 import { createUser, getUsers } from "./user.service";
