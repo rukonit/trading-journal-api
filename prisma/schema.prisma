@@ -9,6 +9,12 @@ generator client {
   output   = "../generated/prisma"
 }
 
+generator pothos {
+  provider     = "prisma-pothos-types"
+  clientOutput = "./prisma"
+  output       = "../generated/pothos-types.ts"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -25,13 +31,35 @@ model User {
 model Trade {
   id Int @id @default(autoincrement())
   account String
-  date DateTime
+  executedAt DateTime
   currency String
   type Int
-  side String
+  commodityType CommodityType
+  eventType EventType
   quantity Int
   price Float
-  grossProceeds Float
-  netProceeds Float
+  commission Float
+  fee Float
   email String
+  source String
+}
+
+enum CommodityType {
+  EQUITY
+  OPTION
+  FUTURE
+  FOREX
+  CRYPTO
+}
+
+enum EventType {
+  BUY
+  SELL
+  SHORT
+  COVER
+  DIVIDEND
+  INTEREST
+  FEE
+  DEPOSIT
+  WITHDRAWAL
 }

@@ -2,14 +2,21 @@ import { err, fromPromise, ok, ResultAsync } from "neverthrow";
 import prisma from "../../lib/prisma";
 import { CreateUserInput } from "./user.schema";
 import { AppError } from "../../utils/error/AppError";
-import { User } from "../../../generated/prisma";
+import { Prisma, User } from "../../../generated/prisma";
+
+type UserQuery = { select?: Prisma.UserSelect };
 
 export const createUser = (
-  data: CreateUserInput
+  data: CreateUserInput,
+  query: UserQuery = {}
 ): ResultAsync<User, AppError> => {
   return fromPromise(
     prisma.user.create({
-      data: data,
+      ...query,
+      data: {
+        ...data,
+        accounts: data.accounts ?? undefined,
+      },
     }),
     (_error) => {
       return new AppError("Database error", 500);
@@ -23,6 +30,6 @@ export const createUser = (
   });
 };
 
-export const getUsers = () => {
-  return prisma.user.findMany();
+export const getUsers = (query: UserQuery = {}) => {
+  return prisma.user.findMany({ ...query });
 };

@@ -2,17 +2,18 @@ import { fromPromise, ok, err, ResultAsync } from "neverthrow";
 import { CreateTradeInput } from "./trade.schema";
 import { AppError } from "../../utils/error/AppError";
 import prisma from "../../lib/prisma";
-import { Trade } from "../../../generated/prisma";
+import { Prisma, Trade } from "../../../generated/prisma";
+
+type TradeQuery = { select?: Prisma.TradeSelect };
 
 export const createTrade = (
-  createTradeArgs: CreateTradeInput
+  createTradeArgs: CreateTradeInput,
+  query: TradeQuery = {}
 ): ResultAsync<Trade, AppError> => {
   return fromPromise(
     prisma.trade.create({
-      data: {
-        ...createTradeArgs,
-        date: new Date(createTradeArgs.date),
-      },
+      ...query,
+      data: createTradeArgs,
     }),
     (_error) => {
       return new AppError("Database error", 500);
@@ -26,15 +27,17 @@ export const createTrade = (
   });
 };
 
-export const getTrades = () => {
-  return prisma.trade.findMany();
+export const getTrades = (query: TradeQuery = {}) => {
+  return prisma.trade.findMany({ ...query });
 };
 
 export const getTradesByUserAccountIdAndEmail = (
   account: string,
-  email: string
+  email: string,
+  query: TradeQuery = {}
 ) => {
   return prisma.trade.findMany({
+    ...query,
     where: {
       account: account,
       email: email,

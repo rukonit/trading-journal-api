@@ -1,37 +1,28 @@
-import { gql } from "apollo-server";
+import { builder } from "../../graphql/builder";
+import { CommodityType, EventType } from "../../../generated/prisma";
 
-export default gql`
-type Trade {
-    id: Int!
-    account: String!
-    date: String!
-    currency: String!
-    type: Int!
-    side: String!
-    quantity: Int!
-    price: Float!
-    grossProceeds: Float!
-    netProceeds: Float!
-    email: String!
-}
+export const CommodityTypeEnum = builder.enumType(CommodityType, {
+  name: "CommodityType",
+});
 
-type Query {
-    trades: [Trade!]!
-    getTradesByUserAccountIdAndEmail(account: String!, email: String!): [Trade!]!
-}
+export const EventTypeEnum = builder.enumType(EventType, {
+  name: "EventType",
+});
 
-type Mutation {
-    createTrade(
-        account: String!
-        date: String!
-        currency: String!
-        type: Int!
-        side: String!
-        quantity: Int!
-        price: Float!
-        grossProceeds: Float!
-        netProceeds: Float!
-        email: String!
-    ): Trade!
-}
-`
+export const TradeType = builder.prismaObject("Trade", {
+  fields: (t) => ({
+    id: t.exposeInt("id"),
+    account: t.exposeString("account"),
+    executedAt: t.expose("executedAt", { type: "DateTime" }),
+    currency: t.exposeString("currency"),
+    type: t.exposeInt("type"),
+    commodityType: t.expose("commodityType", { type: CommodityTypeEnum }),
+    eventType: t.expose("eventType", { type: EventTypeEnum }),
+    quantity: t.exposeInt("quantity"),
+    price: t.exposeFloat("price"),
+    commission: t.exposeFloat("commission"),
+    fee: t.exposeFloat("fee"),
+    email: t.exposeString("email"),
+    source: t.exposeString("source"),
+  }),
+});

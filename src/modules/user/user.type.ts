@@ -1,18 +1,11 @@
-import { gql } from "apollo-server";
+import { builder } from "../../graphql/builder";
 
-export default gql`
-type User {
-    id: Int!
-    name: String!
-    email: String!
-    password: String
-    accounts: [String]
-}
-
-type Query {
-    users: [User!]!
-}
-type Mutation {
-    createUser(name: String!, email: String!, password: String, accounts: [String]): User!
-}
-`
+export const UserType = builder.prismaObject("User", {
+  fields: (t) => ({
+    id: t.exposeInt("id"),
+    name: t.exposeString("name"),
+    email: t.exposeString("email"),
+    password: t.exposeString("password", { nullable: true }),
+    accounts: t.exposeStringList("accounts"),
+  }),
+});

@@ -1,8 +1,6 @@
 import express from "express";
 import { ApolloServer } from "@apollo/server";
-
-import typeDefs from "./graphql/typeDefs";
-import resolvers from "./graphql/resolvers";
+import { schema } from "./graphql/schema";
 import { expressMiddleware } from "@as-integrations/express4";
 import { AppError } from "./utils/error/AppError";
 import { GraphQLError } from "graphql/error";
@@ -12,8 +10,8 @@ const app = express();
 app.use(express.json());
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema,
+  introspection: true,
   formatError: (_, error) => {
     console.log("GraphQL Error:", error);
 

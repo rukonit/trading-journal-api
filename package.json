@@ -4,7 +4,13 @@
   "description": "API for the trading journal ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "npm run generate && tsc -p tsconfig.build.json",
+    "start": "node dist/src/index.js",
+    "generate": "prisma generate",
+    "migrate:deploy": "prisma migrate deploy",
+    "typecheck": "tsc --noEmit --rootDir ."
   },
   "repository": {
     "type": "git",
@@ -15,11 +21,14 @@
   "dependencies": {
     "@apollo/server": "^5.3.0",
     "@as-integrations/express4": "^1.1.2",
+    "@pothos/core": "^4.18.1",
+    "@pothos/plugin-prisma": "^4.17.3",
     "@prisma/client": "^6.19.2",
-    "apollo-server": "^3.13.0",
+    "csv-parse": "^6.1.0",
     "dotenv": "^17.2.3",
     "express": "^4.22.1",
     "graphql": "^16.12.0",
+    "graphql-upload": "^17.0.0",
     "neverthrow": "^8.2.0",
     "prisma": "^6.19.2",
     "punycode": "^2.3.1",
