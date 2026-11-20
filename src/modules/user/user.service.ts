@@ -10,12 +10,15 @@ export const createUser = (
   data: CreateUserInput,
   query: UserQuery = {}
 ): ResultAsync<User, AppError> => {
+  const { address, accounts, ...userData } = data;
+
   return fromPromise(
     prisma.user.create({
       ...query,
       data: {
-        ...data,
-        accounts: data.accounts ?? undefined,
+        ...userData,
+        accounts: accounts ?? undefined,
+        address: address ? { create: address } : undefined,
       },
     }),
     (_error) => {

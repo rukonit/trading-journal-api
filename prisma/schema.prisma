@@ -26,6 +26,18 @@ model User {
   email String @unique
   password String?
   accounts String[]
+  address Address?
+}
+
+model Address {
+  id      Int     @id @default(autoincrement())
+  street1 String
+  street2 String?
+  city    String
+  zipCode String
+  country String
+  userId  Int     @unique
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Trade {

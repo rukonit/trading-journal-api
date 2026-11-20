@@ -4,6 +4,7 @@ import { createUserSchema } from "./user.schema";
 import { createUser, getUsers } from "./user.service";
 import { AppError } from "../../utils/error/AppError";
 import { handlePrismaError } from "../../utils/error/handlePrismaError";
+import { AddressInput } from "./user.type";
 
 builder.queryField("users", (t) =>
   t.prismaField({
@@ -20,6 +21,7 @@ builder.mutationField("createUser", (t) =>
       email: t.arg.string({ required: true }),
       password: t.arg.string(),
       accounts: t.arg.stringList(),
+      address: t.arg({ type: AddressInput }),
     },
     resolve: (query, _root, args) =>
       validateSchema(createUserSchema, args)
