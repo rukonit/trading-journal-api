@@ -23,6 +23,7 @@ export const TradeType = builder.prismaObject("Trade", {
     commission: t.exposeFloat("commission"),
     fee: t.exposeFloat("fee"),
     email: t.exposeString("email"),
+    user: t.relation("user"),
     source: t.exposeString("source"),
   }),
 });

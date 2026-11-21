@@ -18,6 +18,7 @@ export const UserType = builder.prismaObject("User", {
     password: t.exposeString("password", { nullable: true }),
     accounts: t.exposeStringList("accounts"),
     address: t.relation("address", { nullable: true }),
+    trades: t.relation("trades"),
   }),
 });
 

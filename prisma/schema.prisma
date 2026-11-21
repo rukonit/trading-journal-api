@@ -27,6 +27,7 @@ model User {
   password String?
   accounts String[]
   address Address?
+  trades Trade[]
 }
 
 model Address {
@@ -53,6 +54,7 @@ model Trade {
   commission Float
   fee Float
   email String
+  user User @relation(fields: [email], references: [email])
   source String
 }
 

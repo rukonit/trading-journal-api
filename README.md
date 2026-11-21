@@ -32,3 +32,17 @@ docker run --rm \
 ```
 
 When connecting to a database on the host from Docker Desktop, use `host.docker.internal` for `HOST`, not `localhost`.
+
+## Run tests
+
+The integration tests require a separate PostgreSQL test database. Set `TEST_DATABASE_URL` and apply the Prisma migrations to that database before running them:
+
+```bash
+TEST_DATABASE_URL='postgresql://USER:PASSWORD@localhost:5432/TradingJournal_test?schema=public' \
+DATABASE_URL='postgresql://USER:PASSWORD@localhost:5432/TradingJournal_test?schema=public' \
+npx prisma migrate deploy
+
+TEST_DATABASE_URL='postgresql://USER:PASSWORD@localhost:5432/TradingJournal_test?schema=public' npm test
+```
+
+The tests create uniquely named records and remove them when finished. Do not point `TEST_DATABASE_URL` at a production database.
